@@ -15,7 +15,11 @@
               <input type="text" id="city" class="form-control me-2" formControlName="city" placeholder="Enter city name">
               <button type="submit" class="btn btn-primary" [disabled]="cityForm.invalid">Search</button>
             </form>
-            <button class="btn btn-outline-light"></button>
+            <button class="btn custom-btn">24 hours</button>
+            <button class="btn custom-btn">48 hours</button>
+            <button class="btn custom-btn">72 hours</button>
+            <button class="btn custom-btn">1 week</button>
+            <button class="btn custom-btn">1 month</button>
           </div>
         </div>
       </nav>
@@ -31,7 +35,13 @@
       <div class="col-6 text-white">
         <div class="row mb-3">
           <div class="col-12">
-            <!-- ========= Table ========== -->
+
+
+            <!-- <app-table [city]="cityForm.value.city"></app-table> -->
+
+            <app-table [city]="selectedCity"></app-table>
+
+
           </div>
         </div>
 

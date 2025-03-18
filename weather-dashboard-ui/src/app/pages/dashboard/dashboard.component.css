@@ -16,3 +16,16 @@
 .bc {
   padding: 30px; /* This div is used for spacing/margin at the top as you mentioned */
 }
+
+
+
+.custom-btn {
+  background-color: #28a745; 
+  border-color: #28a745; 
+  color: white; 
+}
+
+.custom-btn:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+}

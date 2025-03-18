@@ -8,12 +8,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { NavComponent } from './pages/nav/nav.component';
+import { ChartComponent } from './pages/chart/chart.component';
+import { TableComponent } from './pages/table/table.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
     DashboardComponent,
+    ChartComponent,
+    TableComponent,
     
   ],
   imports: [

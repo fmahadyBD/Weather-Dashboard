@@ -1,0 +1,22 @@
+<div class="container mt-4">
+    <p *ngIf="errorMessage" class="text-danger text-center">{{ errorMessage }}</p>
+  
+    <div *ngIf="weatherData.length > 0" class="table-responsive" style="max-height: 400px;">
+        <table class="table table-bordered table-striped">
+            <thead class="custom-header sticky-top">
+          <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Temperature (°C)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of weatherData">
+            <td>{{ data.date }}</td>
+            <td>{{ data.time }}</td>
+            <td>{{ data.temperature }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
