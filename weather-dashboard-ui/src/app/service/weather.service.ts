@@ -7,11 +7,17 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class WeatherService {
-  private baseUrl = 'http://localhost:8080/api/weather/city'; 
+  private baseUrl = 'http://localhost:8080/api/weather'; 
 
   constructor(private http: HttpClient) { }
 
   getCurrentWeather(city: string): Observable<weatherResponse> {
-    return this.http.post<weatherResponse>(this.baseUrl, { city });
+    const url = `${this.baseUrl}/city`;
+    return this.http.post<weatherResponse>(url, { city });
+  }
+
+  getWeather(city: string): Observable<any> {
+    const url = `${this.baseUrl}/full-data/city`;
+    return this.http.post<any>(url, { city });
   }
 }

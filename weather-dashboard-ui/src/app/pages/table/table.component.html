@@ -1,0 +1,28 @@
+<div class="container mt-4">  
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" [(ngModel)]="city" placeholder="Enter city name" />
+      <button class="btn btn-primary" (click)="fetchWeather()">Get Weather</button>
+    </div>
+  
+    <p *ngIf="errorMessage" class="text-danger text-center">{{ errorMessage }}</p>
+  
+    <div *ngIf="weatherData.length > 0" class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+          <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Temperature (°C)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of weatherData">
+            <td>{{ data.date }}</td>
+            <td>{{ data.time }}</td>
+            <td>{{ data.temperature }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

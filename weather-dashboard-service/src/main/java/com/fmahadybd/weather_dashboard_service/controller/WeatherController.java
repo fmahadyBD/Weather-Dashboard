@@ -1,5 +1,6 @@
 package com.fmahadybd.weather_dashboard_service.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fmahadybd.weather_dashboard_service.request.CityNameRequest;
 import com.fmahadybd.weather_dashboard_service.response.ApiResponse;
 import com.fmahadybd.weather_dashboard_service.response.WeatherData;
@@ -20,24 +21,31 @@ public class WeatherController {
 
     @PostMapping("/city")
     public ResponseEntity<ApiResponse> getWeatherResult(@Valid @RequestBody CityNameRequest cityNameRequest) {
-       
-       System.out.println("in controller");
+
+        System.out.println("in controller");
         try {
             WeatherData weatherData = weatherService.getWeatherByCity(cityNameRequest.getCity());
 
             if (weatherData == null) {
                 return ResponseEntity.badRequest().body(
-                        new ApiResponse("City not found or weather data unavailable", false, null)
-                );
+                        new ApiResponse("City not found or weather data unavailable", false, null));
             }
 
             return ResponseEntity.ok(
-                    new ApiResponse("Weather data fetched successfully", true, weatherData)
-            );
+                    new ApiResponse("Weather data fetched successfully", true, weatherData));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(
-                    new ApiResponse(e.getMessage(), false, null)
-            );
+                    new ApiResponse(e.getMessage(), false, null));
+        }
+    }
+
+    @PostMapping("/full-data/city")
+    public ResponseEntity<ApiResponse> getWeatherByCityName(@Valid @RequestBody CityNameRequest cityNameRequest) {
+        try {
+            JsonNode weatherData = weatherService.getWeatherByCityName(cityNameRequest.getCity());
+            return ResponseEntity.ok(new ApiResponse("Weather data fetched successfully", true, weatherData));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(new ApiResponse("Error occurred", false, e.getMessage()));
         }
     }
 }

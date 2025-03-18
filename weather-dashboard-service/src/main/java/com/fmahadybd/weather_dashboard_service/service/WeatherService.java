@@ -1,17 +1,25 @@
 package com.fmahadybd.weather_dashboard_service.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fmahadybd.weather_dashboard_service.response.WeatherData;
 
 @Service
 public class WeatherService {
     private final RestTemplate restTemplate = new RestTemplate();
-
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    
     public WeatherData getWeatherByCity(String city) {
         try {
             // we extract location's data from another method
@@ -111,4 +119,54 @@ public class WeatherService {
             return "Hot";
         }
     }
+
+    public JsonNode getWeatherByCityName(String city) {
+        try {
+            String geoUrl = "https://nominatim.openstreetmap.org/search?format=json&q=" + city;
+            ResponseEntity<String> geoResponse = restTemplate.getForEntity(geoUrl, String.class);
+            JsonNode geoJson = objectMapper.readTree(geoResponse.getBody());
+
+            if (geoJson.isEmpty()) {
+                throw new RuntimeException("Invalid city name. Please enter a valid city.");
+            }
+
+            double latitude = geoJson.get(0).get("lat").asDouble();
+            double longitude = geoJson.get(0).get("lon").asDouble();
+
+           
+            String weatherUrl = "https://api.open-meteo.com/v1/forecast?latitude=" + latitude +
+                    "&longitude=" + longitude +
+                    "&hourly=temperature_2m&timezone=auto";
+
+            ResponseEntity<String> weatherResponse = restTemplate.getForEntity(weatherUrl, String.class);
+            JsonNode weatherJson = objectMapper.readTree(weatherResponse.getBody());
+
+           
+            JsonNode timeArray = weatherJson.get("hourly").get("time");
+            JsonNode temperatureArray = weatherJson.get("hourly").get("temperature_2m");
+
+            List<Map<String, String>> formattedData = new ArrayList<>();
+
+            for (int i = 0; i < timeArray.size(); i++) {
+                String dateTime = timeArray.get(i).asText(); 
+                String date = dateTime.split("T")[0];
+                String time = dateTime.split("T")[1];
+                String temperature = temperatureArray.get(i).asText() + "°C";
+
+                formattedData.add(Map.of(
+                        "date", date,
+                        "time", time,
+                        "temperature", temperature
+                ));
+            }
+
+            return objectMapper.valueToTree(formattedData);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error fetching weather data: " + e.getMessage());
+        }
+    }
+
+    
+
 }
