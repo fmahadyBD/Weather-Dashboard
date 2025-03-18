@@ -1,14 +1,9 @@
-<div class="container mt-4">  
-    <div class="input-group mb-3">
-      <input type="text" class="form-control" [(ngModel)]="city" placeholder="Enter city name" />
-      <button class="btn btn-primary" (click)="fetchWeather()">Get Weather</button>
-    </div>
-  
+<div class="container mt-4">
     <p *ngIf="errorMessage" class="text-danger text-center">{{ errorMessage }}</p>
   
-    <div *ngIf="weatherData.length > 0" class="table-responsive">
-      <table class="table table-bordered table-striped">
-        <thead class="table-dark">
+    <div *ngIf="weatherData.length > 0" class="table-responsive" style="max-height: 400px;">
+        <table class="table table-bordered table-striped">
+            <thead class="custom-header sticky-top">
           <tr>
             <th>Date</th>
             <th>Time</th>
@@ -25,4 +20,3 @@
       </table>
     </div>
   </div>
-  

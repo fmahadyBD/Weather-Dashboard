@@ -1,20 +1,4 @@
-.container {
-    max-width: 700px;
-    margin: auto;
+.custom-header {
+    background-color: #28a745; 
+    color: white;
   }
-  
-  .input-group {
-    max-width: 500px;
-    margin: auto;
-  }
-  
-  .table-responsive {
-    max-height: 400px;
-    overflow-y: auto;
-  }
-  
-  .table {
-    width: 100%;
-    margin-top: 20px;
-  }
-  

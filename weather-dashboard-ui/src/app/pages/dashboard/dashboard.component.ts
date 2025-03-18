@@ -10,10 +10,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent implements OnInit {
+  
+  
   cityForm: FormGroup;
   errorMessage: string | null = null;
   successMessage: string | null = null;
-  weather: weatherResponse | null = null;
+  weather: any = null;
+  selectedCity: string = '';
 
   constructor(
     private weatherService: WeatherService,
@@ -32,16 +35,14 @@ export class DashboardComponent implements OnInit {
       return;
     }
 
-    const { city } = this.cityForm.value;
-    this.weatherService.getCurrentWeather(city).subscribe({
+    this.selectedCity = this.cityForm.value.city;
+    this.weatherService.getCurrentWeather(this.selectedCity).subscribe({
       next: (response) => {
-        console.log(response.data);
         this.weather = response;
         this.errorMessage = null;
         this.successMessage = "Weather data fetched successfully";
       },
-      error: (err) => {
-        console.error('Error fetching weather data:', err);
+      error: () => {
         this.errorMessage = 'Not Found this city';
         this.successMessage = null;
       }
